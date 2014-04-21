@@ -1,17 +1,32 @@
 package com.cmpe277.poi.app;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.parse.ParseUser;
 
 
 public class MainActivity extends Activity {
+    PoyntLocationManager poyntLocation;
+    private final static boolean LOCATION_UPDATE_ON_CREATE = true;
+    private final static boolean LOCATION_SINGLE_UPDATE = true;
+
     // TODO
     // private DestListAdapter destListAdapter;
     // private ListView destList;
@@ -20,6 +35,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        poyntLocation = new PoyntLocationManager(this,
+                                                 LOCATION_UPDATE_ON_CREATE,
+                                                 LOCATION_SINGLE_UPDATE);
 
         /* TODO: Need to implement custom Parse adapters.
         // Get the list view and set our custom task list adapter
@@ -48,6 +67,7 @@ public class MainActivity extends Activity {
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
+
 
     /*
     @Override

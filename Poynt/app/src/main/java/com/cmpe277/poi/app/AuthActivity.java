@@ -19,7 +19,7 @@ import com.parse.SignUpCallback;
 
 
 public class AuthActivity extends Activity {
-    private final boolean DEBUG_AUTH = true;
+    private final boolean DEBUG_AUTH = false;
 
     private final String TAG = "AuthActivity";
     private final String FONT_PATH = "fonts/ExistenceLight.otf";
