@@ -189,7 +189,11 @@ Log.i("lSize",String.valueOf(jArr.length()));
            for (int k=0; k<jArr.length();k++){
                JSONObject jObj2 = jArr.getJSONObject(k);
                if (!finalMap.containsKey(jObj2.getString("id"))) {
-                   finalMap.put(jObj2.getString("id"), (jObj2.getString("name") + "\n" + jObj2.getString("vicinity")));
+                   finalMap.put(jObj2.getString("id"),
+                                (jObj2.getString("name") + "\n" +
+                                 jObj2.getString("vicinity") + "\n" +
+                                 jObj2.getString("rating") + "\n" +
+                                 jObj2.getString("opening_hours")));
                }
 
            }

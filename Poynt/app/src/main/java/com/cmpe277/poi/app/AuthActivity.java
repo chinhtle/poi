@@ -37,7 +37,6 @@ public class AuthActivity extends Activity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if ((currentUser != null) && !DEBUG_AUTH) {
             // User is still logged in.  Proceed to show the app's main activity
-
             finish();
             showMainActivity();
         } else {

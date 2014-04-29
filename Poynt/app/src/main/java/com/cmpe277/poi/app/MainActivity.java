@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -17,9 +18,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.util.Log;
@@ -51,6 +56,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         poyntLocation = new PoyntLocationManager(this,
@@ -72,6 +78,31 @@ public class MainActivity extends Activity {
         from.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_items));
         to = (AutoCompleteTextView) findViewById(R.id.to);
         to.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_items));
+
+        // Set action listeners for the to/from textfields for "search" or "done" from keyboard
+        // event.
+        from.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            @Override
+            public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+                if((arg1 == EditorInfo.IME_ACTION_SEARCH) ||
+                   (arg1 == EditorInfo.IME_ACTION_DONE))
+                {
+                    // search pressed and perform your functionality.
+                    loadDirections(arg0);
+                }
+                return false;
+        } });
+        to.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            @Override
+            public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+                if((arg1 == EditorInfo.IME_ACTION_SEARCH) ||
+                   (arg1 == EditorInfo.IME_ACTION_DONE))
+                {
+                    // search pressed and perform your functionality.
+                    loadDirections(arg0);
+                }
+                return false;
+        } });
     }
 
     public void loadDirections(View view){
@@ -100,6 +131,7 @@ public class MainActivity extends Activity {
                 while ((read = in.read(buff)) != -1) {
                     jsonResults.append(buff, 0, read);
                 }
+                Log.v(LOG_TAG, "Directions results: " + jsonResults.toString());
             } catch (MalformedURLException e) {
                 Log.v(LOG_TAG, "Error processing Directions API URL", e);
             } catch (IOException e) {
@@ -121,7 +153,6 @@ public class MainActivity extends Activity {
 
     }
 
-    // TODO: Add logout button
     public void onClickSignout(View view)
     {
         ParseUser.logOut();
@@ -136,27 +167,4 @@ public class MainActivity extends Activity {
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
-
-
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    */
 }

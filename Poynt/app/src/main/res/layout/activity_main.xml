@@ -2,67 +2,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.cmpe277.poi.app.MainActivity">
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/auth_background_dark"
+        android:cropToPadding="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/currentLocation" />
+        android:id="@+id/currentLocation"
+        android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="38dp"
-        android:layout_marginTop="57dp"
-        android:text="@string/from"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <AutoCompleteTextView
-        android:id="@+id/from"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="19dp"
-        android:ems="10" >
+        android:paddingBottom="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/menu">
 
-        <requestFocus />
-    </AutoCompleteTextView>
+        <!-- TODO.  Add logout icon
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="7dp"
+            android:onClick="onClickSignout"
+            android:clickable="true"/>
+        -->
 
-    <AutoCompleteTextView
-        android:id="@+id/to"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="19dp"
-        android:ems="10" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logoutButton"
+            android:text="LOGOUT"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:onClick="onClickSignout"
+            android:textColor="@color/common_signin_btn_text_light"
+            />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/from"
-        android:layout_marginTop="44dp"
-        android:text="@string/to"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <AutoCompleteTextView
+            android:id="@+id/from"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="19dp"
+            android:ems="10"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:singleLine="true"
+            android:hint="From">
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/to"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="46dp"
-        android:text="@string/load_directions"
-        android:onClick = "loadDirections" />
+            <requestFocus />
+        </AutoCompleteTextView>
 
+        <AutoCompleteTextView
+            android:id="@+id/to"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="19dp"
+            android:ems="10"
+            android:layout_below="@+id/from"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:singleLine="true"
+            android:hint="To"/>
+    </LinearLayout>
 </RelativeLayout>
