@@ -9,5 +9,6 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="load_directions">Load Directions</string>
-
+    <string name="title_activity_poi">POIActivity</string>
+    <string name="toPoi">Show POIs</string>
 </resources>
