@@ -5,7 +5,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +35,8 @@ public class DirectionsActivity extends Activity {
 
     private ArrayList<String> listShow = new ArrayList<String>();
     private ArrayList<String> locationList = new ArrayList<String>();
-    private Map<String,String> finalMap = new HashMap<String, String>();
+   private Map<String,String> finalMap = new HashMap<String, String>();
+   //private Set<String> finalSet = new HashSet<String>();
 
     private final String API_KEY="AIzaSyCDqRAPjBga2wA0zwVzQpfElhn_ZqmLJ1Q";
     private final String URL="https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
@@ -99,7 +103,7 @@ public class DirectionsActivity extends Activity {
 
                 JSONArray jArr;
                 ArrayList<String> urlList= new ArrayList<String>();
-                Map<KeyPOI, String> mapPOIs = new HashMap<KeyPOI, String>();
+             //   Map<KeyPOI, String> mapPOIs = new HashMap<KeyPOI, String>();
 
                 //gets https urls for each location list
                 if(locationList.isEmpty()){
@@ -186,23 +190,37 @@ Log.i("lSize",String.valueOf(jArr.length()));
             }
 
             JSONArray jArr = jObj.getJSONArray("results");
-           for (int k=0; k<jArr.length();k++){
-               JSONObject jObj2 = jArr.getJSONObject(k);
-               if (!finalMap.containsKey(jObj2.getString("id"))) {
-                   finalMap.put(jObj2.getString("id"),
-                                (jObj2.getString("name") + "\n" +
-                                 jObj2.getString("vicinity") + "\n" +
-                                 jObj2.getString("rating") + "\n" +
-                                 jObj2.getString("opening_hours")));
-               }
+
+               for (int k=0; k<jArr.length();k++){
+                   JSONObject jObj2 = jArr.getJSONObject(k);
+                   String id = jObj2.getString("id");
+                   if (!finalMap.containsKey(id)) {
+
+                       ///
+                       String open = jObj2.getJSONObject("opening_hours").getString("open_now");
+                       if (open.equals("true"))
+                           open = "Yes";
+                       else
+                           open = "No";
+
+
+                       StringBuilder poiSb = new StringBuilder();
+                       poiSb.append(jObj2.getString("name") + "\n");
+                       poiSb.append(jObj2.getString("vicinity") + "\n");
+                       poiSb.append("Rating: " + jObj2.getString("rating") + "\n");
+                       poiSb.append("Open Now: " + open);
+                       String poisNew = poiSb.toString();
+                       ///
+
+                       finalMap.put(id,poisNew);
+                   }
+
 
            }
+//            for(String s: finalSet){
+//                Log.i("fs",s);
+//            }
 
-            for(Map.Entry<String,String> entry: finalMap.entrySet()){
-                String key = entry.getKey();
-                String v = entry.getValue();
-                Log.i("kvvv",key+" "+v);
-            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -233,11 +251,10 @@ ArrayList<String> tempList = new ArrayList<String>();
                         jsonResults.append(buff, 0, read);
                     }
                     getValuesPOI(jsonResults.toString());
-                    Log.i("jsonWhole",jsonResults.toString());
+             //       Log.i("jsonWhole",jsonResults.toString());
 
-                    for(String v: finalMap.values()){
-                        listShow.add(v);
-                    }
+
+
 
                     in.close();
                     conn.disconnect();
@@ -246,6 +263,10 @@ ArrayList<String> tempList = new ArrayList<String>();
                     e.printStackTrace();
                 }
             }
+
+                          for(Map.Entry<String,String> entry: finalMap.entrySet()){
+                        listShow.add(entry.getValue());
+                    }
 
 
 
