@@ -167,4 +167,14 @@ public class MainActivity extends Activity {
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
+
+    public void onClickDirections(View view)
+    {
+        // TODO
+    }
+
+    public void onClickFavorites(View view)
+    {
+        // TODO
+    }
 }

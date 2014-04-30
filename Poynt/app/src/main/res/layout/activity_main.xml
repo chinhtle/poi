@@ -24,27 +24,47 @@
         android:orientation="vertical"
         android:background="@drawable/menu">
 
-        <!-- TODO.  Add logout icon
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="7dp"
-            android:onClick="onClickSignout"
-            android:clickable="true"/>
-        -->
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:id="@+id/logoutButton"
-            android:text="LOGOUT"
-            android:layout_marginTop="10dp"
+            android:layout_width="fill_parent"
             android:layout_marginLeft="10dp"
-            android:clickable="true"
-            android:onClick="onClickSignout"
-            android:textColor="@color/common_signin_btn_text_light"
-            />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/logoutButton"
+                android:onClick="onClickSignout"
+                android:src="@drawable/logout_64"
+                android:clickable="true" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/favoriteButton"
+                    android:layout_gravity="right"
+                    android:onClick="onClickFavorites"
+                    android:src="@drawable/star_icon"/>
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/directionsButton"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:onClick="onClickDirections"
+                    android:src="@drawable/icon_directions"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
         <AutoCompleteTextView
             android:id="@+id/from"
