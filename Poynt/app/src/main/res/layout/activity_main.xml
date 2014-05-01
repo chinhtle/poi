@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:orientation="vertical"
-        android:background="@drawable/menu">
+        android:background="@drawable/menu"
+        android:id="@+id/linearLayout">
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -94,4 +95,12 @@
             android:singleLine="true"
             android:hint="To"/>
     </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/poiListView"
+        android:layout_below="@+id/linearLayout"
+        android:layout_toRightOf="@+id/currentLocation" />
+
 </RelativeLayout>

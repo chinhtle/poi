@@ -7,25 +7,9 @@
     tools:context="com.example.googlemapstest.DirectionsActivity"
     tools:ignore="MergeRootFrame" >
 
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/toPoi"
-        android:id="@+id/buttonPoi"
-        android:layout_gravity="center_horizontal" />
-
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/scrolllayout"
-            android:orientation="vertical" >
-        </LinearLayout>
-    </ScrollView>
-
+        android:layout_height="wrap_content"
+        android:id="@+id/directionsListView"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>
