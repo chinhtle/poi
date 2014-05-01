@@ -1,0 +1,170 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cmpe277.poi.app.PoyntDetailsActivity">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/auth_background_dark"
+        android:cropToPadding="true" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/poynt_details_background"
+        android:weightSum="1">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="POI Name"
+            android:id="@+id/poyntName"
+            android:layout_gravity="center_horizontal"
+            android:textSize="30dp"
+            android:layout_weight=".001"
+            android:textAlignment="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@color/holo_blue_dark"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Rating: "
+                android:textSize="20dp"
+                android:textColor="@android:color/darker_gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/poyntRating"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@android:color/darker_gray"/>
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@color/holo_blue_dark"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Address: \n"
+                android:textSize="20dp"
+                android:textColor="@android:color/darker_gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/poyntAddress"
+                android:text="Temp Address"
+                android:textSize="20dp"
+                android:textColor="@android:color/darker_gray"/>
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@color/holo_blue_dark"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Open Now: "
+                android:textSize="20dp"
+                android:textColor="@android:color/darker_gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/poyntOpenNow"
+                android:text="Yes"
+                android:textSize="20dp"
+                android:textColor="@android:color/darker_gray"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/favorite_button"
+                android:clickable="true"
+                android:onClick="onClickSavePoynt"/>
+
+            </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

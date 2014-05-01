@@ -21,4 +21,7 @@
 
     <color name="main_white_alpha">#7fd7d7d7</color>
     <color name="menu_background">#77000000</color>
+    <color name="poynt_details_background">#77000000</color>
+
+    <color name="holo_blue_dark">#ff0099cc</color>
 </resources>

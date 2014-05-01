@@ -29,7 +29,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.util.Log;
@@ -66,6 +68,8 @@ public class MainActivity extends Activity {
     private ArrayList<String> locationList = new ArrayList<String>();
     private ArrayList<String> resultList = new ArrayList<String>();
     private Map<String,String> finalMap = new HashMap<String, String>();
+    private ArrayList<Poynt> poyntList = new ArrayList<Poynt>();
+
     //private Set<String> finalSet = new HashSet<String>();
 
     private final String API_KEY="AIzaSyCDqRAPjBga2wA0zwVzQpfElhn_ZqmLJ1Q";
@@ -73,6 +77,8 @@ public class MainActivity extends Activity {
     private final String TYPES="store";
     private final String RADIUS="500";
     private final String SENSOR="true";
+
+    private ArrayAdapter<String> poiListViewAdapter;
 
     // Indicates whether user has clicked current location button.  Resets when user brings focus
     // to the textfield.
@@ -146,6 +152,51 @@ public class MainActivity extends Activity {
                 }
                 return false;
         } });
+
+        // Setup click listener for the POI listview
+        poiListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_selectable_list_item);
+
+        poiListView.setAdapter(poiListViewAdapter);
+        poiListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> listView, View itemView,
+                                    int itemPosition, long itemId)
+            {
+                // Transfer current item to PoyntDetailsActivity
+                Log.v(TAG, "onItemClick - position: " + itemPosition);
+
+                // Retrieve the current item's details
+                Poynt retrievedPoynt = poyntList.get(itemPosition);
+
+                String poyntName = retrievedPoynt.getName();
+                double poyntRating = retrievedPoynt.getRating();
+                String poyntAddress = retrievedPoynt.getAddress();
+                String poyntOpenNow = retrievedPoynt.getOpenNow();
+
+                // Store it in the extras
+                Intent intent = new Intent(MainActivity.this, PoyntDetailsActivity.class);
+                intent.putExtra("name", poyntName);
+                intent.putExtra("rating", poyntRating);
+
+                Log.v(TAG, "onClickItem - name: " + poyntName);
+                Log.v(TAG, "onClickItem - rating: " + poyntRating);
+
+                if((poyntAddress != null) && !poyntAddress.isEmpty()) {
+                    intent.putExtra("address", poyntAddress);
+                    Log.v(TAG, "onClickItem - address: " + poyntAddress);
+                }
+                else
+                    intent.putExtra("address", "N/A");
+
+                if((poyntOpenNow != null) && !poyntOpenNow.isEmpty()) {
+                    Log.v(TAG, "onClickItem - opennow: " + poyntOpenNow);
+                    intent.putExtra("opennow", poyntOpenNow);
+                }
+                else
+                    intent.putExtra("opennow", "N/A");
+
+                startActivity(intent);
+            }
+        });
     }
 
     public boolean validateLocationFields()
@@ -186,9 +237,16 @@ public class MainActivity extends Activity {
         ArrayList<String> urlList = new ArrayList<String>();
         //   Map<KeyPOI, String> mapPOIs = new HashMap<KeyPOI, String>();
 
+        // Clear in case there are existing data.
+        poiListViewAdapter.clear();
+        poyntList.clear();
+
         //gets https urls for each location list
         if (locationList.isEmpty()) {
             listShow.add("No POIs Available.");
+
+            // Then add everything to the adapter again.
+            poiListViewAdapter.addAll(listShow);
         } else {
             jArr = getJsonLngLat(locationList);
             for (int i = 0; i < jArr.length(); i++) {
@@ -268,16 +326,28 @@ public class MainActivity extends Activity {
                 JSONObject jObj2 = jArr.getJSONObject(k);
                 String id = jObj2.getString("id");
                 if (!finalMap.containsKey(id)) {
+                    Poynt newPoynt = new Poynt();
+
                     StringBuilder poiSb = new StringBuilder();
+                    String tempValue = "";
 
-                    if(jObj2.has("name"))
-                        poiSb.append(jObj2.getString("name") + "\n");
+                    if(jObj2.has("name")) {
+                        tempValue = jObj2.getString("name");
+                        poiSb.append(tempValue + "\n");
+                        newPoynt.setName(tempValue);
+                    }
 
-                    if(jObj2.has("vicinity"))
-                        poiSb.append(jObj2.getString("vicinity") + "\n");
+                    if(jObj2.has("vicinity")) {
+                        tempValue = jObj2.getString("vicinity");
+                        poiSb.append(tempValue + "\n");
+                        newPoynt.setAddress(tempValue);
+                    }
 
-                    if(jObj2.has("rating"))
-                        poiSb.append("Rating: " + jObj2.getString("rating") + "\n");
+                    if(jObj2.has("rating")) {
+                        tempValue = jObj2.getString("rating");
+                        poiSb.append(tempValue + "\n");
+                        newPoynt.setRating(Double.parseDouble(tempValue));
+                    }
 
                     if(jObj2.has("opening_hours") && jObj2.has("open_now"))
                     {
@@ -288,12 +358,18 @@ public class MainActivity extends Activity {
                         else
                             open = "No";
 
-                        poiSb.append("Open Now: " + open);
+                        newPoynt.setOpenNow(open);
+                        //poiSb.append("Open Now: " + open);
                     }
 
                     String poisNew = poiSb.toString();
+                    Log.v(TAG, "Adding point of interest: " + poisNew);
 
                     finalMap.put(id,poisNew);
+                    listShow.add(poisNew);
+
+                    // Add it to the poynt objects list
+                    poyntList.add(newPoynt);
                 }
             }
 //            for(String s: finalSet){
@@ -337,9 +413,9 @@ public class MainActivity extends Activity {
                 }
             }
 
-            for(Map.Entry<String,String> entry: finalMap.entrySet()){
-                listShow.add(entry.getValue());
-            }
+//            for(Map.Entry<String,String> entry: finalMap.entrySet()){
+//                listShow.add(entry.getValue());
+//            }
 
             return null ;
         }
@@ -348,8 +424,13 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String result) {
             if(!listShow.isEmpty()) {
-                poiListView.setAdapter(new ArrayAdapter<String>(MainActivity.this,
-                                       android.R.layout.simple_list_item_1, listShow));
+                // Clear in case there are existing data.
+                poiListViewAdapter.clear();
+
+                // Then add everything to the adapter again.
+                poiListViewAdapter.addAll(listShow);
+                //poiListView.setAdapter(new ArrayAdapter<String>(MainActivity.this,
+                //        android.R.layout.simple_list_item_1, listShow));
             }
         }
     }

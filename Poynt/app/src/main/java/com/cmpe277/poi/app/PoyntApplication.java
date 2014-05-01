@@ -14,12 +14,10 @@ public class PoyntApplication extends Application {
     public void onCreate()
     {
         super.onCreate();
-
         Log.v(TAG, "onCreate()");
 
         // Register our parse classes for easy data retrieval/storage with Parse services.
-        // TODO: Need to add other objects once they're created
-        ParseObject.registerSubclass(UserDestination.class);
+        ParseObject.registerSubclass(Poynt.class);
 
         // Initialize Parse services with provided Parse App-ID and Client-ID
         Parse.initialize(this,
