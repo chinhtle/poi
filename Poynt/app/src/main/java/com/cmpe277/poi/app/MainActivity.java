@@ -195,6 +195,7 @@ public class MainActivity extends Activity {
                     intent.putExtra("opennow", "N/A");
 
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
             }
         });
     }
@@ -345,7 +346,7 @@ public class MainActivity extends Activity {
 
                     if(jObj2.has("rating")) {
                         tempValue = jObj2.getString("rating");
-                        poiSb.append(tempValue + "\n");
+                        //poiSb.append(tempValue + "\n");
                         newPoynt.setRating(Double.parseDouble(tempValue));
                     }
 
@@ -429,8 +430,6 @@ public class MainActivity extends Activity {
 
                 // Then add everything to the adapter again.
                 poiListViewAdapter.addAll(listShow);
-                //poiListView.setAdapter(new ArrayAdapter<String>(MainActivity.this,
-                //        android.R.layout.simple_list_item_1, listShow));
             }
         }
     }
@@ -537,7 +536,7 @@ public class MainActivity extends Activity {
                     Intent intent = new Intent(MainActivity.this, DirectionsActivity.class);
                     intent.putStringArrayListExtra("resultList", resultList);
                     startActivity(intent);
-
+                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     break;
                 }
                 default:
@@ -579,6 +578,8 @@ public class MainActivity extends Activity {
 
     public void onClickFavorites(View view)
     {
-        // TODO
+        Intent intent = new Intent(MainActivity.this, FavoritePoyntsActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 }

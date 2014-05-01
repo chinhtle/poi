@@ -12,5 +12,6 @@
     <string name="title_activity_poi">POIActivity</string>
     <string name="toPoi">Show POIs</string>
     <string name="title_activity_poynt_details">PoyntDetailsActivity</string>
+    <string name="title_activity_favorite_poynts">FavoritePoyntsActivity</string>
 
 </resources>

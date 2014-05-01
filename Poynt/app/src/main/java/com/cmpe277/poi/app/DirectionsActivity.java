@@ -33,6 +33,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
+
 public class DirectionsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,5 +48,34 @@ public class DirectionsActivity extends Activity {
             directionsListView.setAdapter(new ArrayAdapter<String>(DirectionsActivity.this,
                     android.R.layout.simple_list_item_1, resultList));
         }
+    }
+
+    public void onClickSearch(View view)
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+    }
+
+    public void onClickLogout(View view)
+    {
+        ParseUser.logOut();
+
+        // return to the authentication page
+        showAuthActivity();
+    }
+
+    // When logging out, show auth activity again.
+    public void showAuthActivity() {
+        Intent intent = new Intent(this, AuthActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+    }
+
+    public void onClickFavorites(View view)
+    {
+        Intent intent = new Intent(DirectionsActivity.this, FavoritePoyntsActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 }

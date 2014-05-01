@@ -38,6 +38,10 @@
             android:name="com.cmpe277.poi.app.PoyntDetailsActivity"
             android:label="@string/title_activity_poynt_details" >
         </activity>
+        <activity
+            android:name="com.cmpe277.poi.app.FavoritePoyntsActivity"
+            android:label="@string/title_activity_favorite_poynts" >
+        </activity>
     </application>
 
 </manifest>
