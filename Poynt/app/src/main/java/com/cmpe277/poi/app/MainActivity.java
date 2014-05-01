@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
     private final static String TAG = "MainActivity";
 
     PoyntLocationManager poyntLocation;
-    private final static boolean LOCATION_UPDATE_ON_CREATE = true;
+    private final static boolean LOCATION_UPDATE_ON_CREATE = false;
     private final static boolean LOCATION_SINGLE_UPDATE = true;
 
     private AutoCompleteTextView from;
@@ -72,7 +72,12 @@ public class MainActivity extends Activity {
     private final String URL="https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private final String TYPES="store";
     private final String RADIUS="500";
-    private final String SENSOR="false";
+    private final String SENSOR="true";
+
+    // Indicates whether user has clicked current location button.  Resets when user brings focus
+    // to the textfield.
+    private boolean currentLocationClicked = false;
+    public String currentLocationStr = "";
 
     private enum PostDirExecType {
         POST_EXEC_TYPE_UNKNOWN,
@@ -112,6 +117,21 @@ public class MainActivity extends Activity {
         to = (AutoCompleteTextView) findViewById(R.id.to);
         to.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_items));
         poiListView = (ListView) findViewById(R.id.poiListView);
+
+        from.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Only clear if current location was clicked.  We don't want to clear the user's
+                // selection!
+                if(currentLocationClicked) {
+                    // Reset the current location flag
+                    currentLocationClicked = false;
+
+                    // Clear the textfield for user to enter new location
+                    from.setText("");
+                }
+            }
+        });
 
         // Set action listeners for the to textfield for "search" or "done" from keyboard
         // event.  Invokes retrieving POIs
@@ -248,22 +268,30 @@ public class MainActivity extends Activity {
                 JSONObject jObj2 = jArr.getJSONObject(k);
                 String id = jObj2.getString("id");
                 if (!finalMap.containsKey(id)) {
-
-                    ///
-                    String open = jObj2.getJSONObject("opening_hours").getString("open_now");
-                    if (open.equals("true"))
-                        open = "Yes";
-                    else
-                        open = "No";
-
-
                     StringBuilder poiSb = new StringBuilder();
-                    poiSb.append(jObj2.getString("name") + "\n");
-                    poiSb.append(jObj2.getString("vicinity") + "\n");
-                    poiSb.append("Rating: " + jObj2.getString("rating") + "\n");
-                    poiSb.append("Open Now: " + open);
+
+                    if(jObj2.has("name"))
+                        poiSb.append(jObj2.getString("name") + "\n");
+
+                    if(jObj2.has("vicinity"))
+                        poiSb.append(jObj2.getString("vicinity") + "\n");
+
+                    if(jObj2.has("rating"))
+                        poiSb.append("Rating: " + jObj2.getString("rating") + "\n");
+
+                    if(jObj2.has("opening_hours") && jObj2.has("open_now"))
+                    {
+                        ///
+                        String open = jObj2.getJSONObject("opening_hours").getString("open_now");
+                        if (open.equals("true"))
+                            open = "Yes";
+                        else
+                            open = "No";
+
+                        poiSb.append("Open Now: " + open);
+                    }
+
                     String poisNew = poiSb.toString();
-                    ///
 
                     finalMap.put(id,poisNew);
                 }
@@ -375,11 +403,21 @@ public class MainActivity extends Activity {
             HttpURLConnection conn = null;
             StringBuilder jsonResults = new StringBuilder();
             try {
-                StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?sensor=false&key=" + "AIzaSyCYj21MIxpMSrZQLJBfBrzF6ET6CG5MiMg");
-                sb.append("&origin=" + from.getText());
+                StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?sensor=" + SENSOR + "&key=" + "AIzaSyCYj21MIxpMSrZQLJBfBrzF6ET6CG5MiMg");
+
+                // Grab the current location long/lat if exists.
+                if(currentLocationClicked)
+                    sb.append("&origin=" + currentLocationStr);
+                else
+                    sb.append("&origin=" + from.getText());
+
                 sb.append("&destination=" + to.getText());
+
                 String url_string = sb.toString();
                 url_string = url_string.replace(" ","+");
+
+                Log.v(TAG, "Google Places API Request String: " + url_string);
+
                 URL url = new URL(url_string);
                 conn = (HttpURLConnection) url.openConnection();
                 InputStreamReader in = new InputStreamReader(conn.getInputStream());
@@ -449,6 +487,13 @@ public class MainActivity extends Activity {
     {
         execType = PostDirExecType.POST_EXEC_TYPE_DIRECTIONS;
         getDirections();
+    }
+
+    public void onClickCurrentLocation(View view)
+    {
+        Log.v(TAG, "Retrieving the current location..");
+        currentLocationClicked = true;
+        poyntLocation.getLocationSingleUpdate();
     }
 
     public void onClickFavorites(View view)

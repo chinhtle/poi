@@ -67,33 +67,56 @@
 
         </LinearLayout>
 
-        <AutoCompleteTextView
-            android:id="@+id/from"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="19dp"
-            android:ems="10"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            android:singleLine="true"
-            android:hint="From">
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
 
-            <requestFocus />
-        </AutoCompleteTextView>
+                <AutoCompleteTextView
+                    android:id="@+id/from"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="19dp"
+                    android:ems="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:singleLine="true"
+                    android:hint="From"
+                    android:inputType="textNoSuggestions">
 
-        <AutoCompleteTextView
-            android:id="@+id/to"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="19dp"
-            android:ems="10"
-            android:layout_below="@+id/from"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            android:singleLine="true"
-            android:hint="To"/>
+                    <requestFocus />
+                </AutoCompleteTextView>
+
+                <AutoCompleteTextView
+                    android:id="@+id/to"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="19dp"
+                    android:ems="10"
+                    android:layout_below="@+id/from"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:singleLine="true"
+                    android:hint="To"
+                    android:inputType="textNoSuggestions" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/location_icon"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="10dp"
+                android:onClick="onClickCurrentLocation"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <ListView

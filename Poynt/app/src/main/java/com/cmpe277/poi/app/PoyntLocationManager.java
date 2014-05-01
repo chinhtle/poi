@@ -7,11 +7,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class PoyntLocationManager
 {
-    private Activity ownerActivity;
+    private final String TAG = "PoyntLocationManager";
+
+    private MainActivity ownerActivity;
     private LocationManager locationManager;
     private Criteria locationCriteria;
 
@@ -35,41 +39,52 @@ public class PoyntLocationManager
         }
     };
 
-    public PoyntLocationManager(Activity owner, boolean update, boolean singleRequest)
+    public PoyntLocationManager(MainActivity owner, boolean update, boolean singleRequest)
     {
         ownerActivity = owner;
 
-        setupLocationServices(update, singleRequest);
+        String provider = setupLocationServices();
+
+        if(update)
+        {
+            if(singleRequest)
+            {
+                getLocationSingleUpdate();
+            }
+            else
+            {
+                locationManager.requestLocationUpdates(provider,
+                        LOCATION_CHANGE_DURATION_MS,
+                        LOCATION_CHANGE_METER,
+                        locationListener);
+            }
+
+            if(update) {
+                Location l = locationManager.getLastKnownLocation(provider);
+                updateWithNewLocation(l);
+            }
+        }
     }
 
-    public void setupLocationServices(boolean update, boolean singleRequest)
+    public String setupLocationServices()
     {
+        Log.v(TAG, "setupLocationServices");
+
         String svcName = Context.LOCATION_SERVICE;
         locationManager = (LocationManager)ownerActivity.getSystemService(svcName);
         String provider = setupLocationCriteria(locationManager);
 
-        if(singleRequest)
-        {
-            getLocationSingleUpdate();
-        }
-        else
-        {
-            locationManager.requestLocationUpdates(provider,
-                    LOCATION_CHANGE_DURATION_MS,
-                    LOCATION_CHANGE_METER,
-                    locationListener);
-        }
-
-        if(update) {
-            Location l = locationManager.getLastKnownLocation(provider);
-            updateWithNewLocation(l);
-        }
+        return provider;
     }
 
-    private void getLocationSingleUpdate()
+    public void getLocationSingleUpdate()
     {
+        Log.v(TAG, "getLocationSingleUpdate");
+
         if((locationManager != null) && (locationCriteria != null))
         {
+            Log.v(TAG, "Requesting single update");
+
             locationManager.requestSingleUpdate(locationCriteria,
                                                 locationListener,
                                                 null /*looper*/);
@@ -91,6 +106,8 @@ public class PoyntLocationManager
     }
 
     private void updateWithNewLocation(Location location) {
+        Log.v(TAG, "updateWithNewLocation");
+
         TextView currentLocationText;
         currentLocationText = (TextView)ownerActivity.findViewById(R.id.currentLocation);
         String latLongString = "No location found";
@@ -98,9 +115,17 @@ public class PoyntLocationManager
         if (location != null)
         {
             double lat = location.getLatitude();
-            double lng = location.getLongitude(); latLongString = "Lat:" + lat + "\nLong:" + lng;
-        }
+            double lng = location.getLongitude();
+            latLongString = lat + "," + lng;
 
-        currentLocationText.setText("Your Current Position is:\n" + latLongString);
+            // Update the text to reflect Current Location selection
+            EditText fromTextField = (EditText)ownerActivity.findViewById(R.id.from);
+            fromTextField.setText("Current Location");
+
+            // Store the lat long for mainActivity to use.
+            ownerActivity.currentLocationStr = latLongString;
+
+            Log.v(TAG, "Obtained location: " + latLongString);
+        }
     }
 }
